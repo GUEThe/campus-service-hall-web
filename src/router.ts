@@ -1,10 +1,10 @@
 import Vue from "vue";
-import Router from "vue-router";
+import Router, { Route } from "vue-router";
 import Home from "./views/Home.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router: Router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -24,3 +24,16 @@ export default new Router({
     }
   ]
 });
+
+// 简单权限控制
+const whiteList: string[] = ["login", "signup"];
+const isLogin: boolean = false;
+router.beforeEach((to: Route, form: Route, next: Function) => {
+  // 不在白名单内，没有登陆
+  if (whiteList.indexOf(to.name as string) === -1 && !isLogin) {
+    next("/login");
+  }
+  next();
+});
+
+export default router;
