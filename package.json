@@ -6,9 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "pregen_api": "ts-node   --project scripts/tsconfig.json scripts/update_doc_json.ts",
+    "gen_api": "ts-node   --project scripts/tsconfig.json scripts/gen_api.ts"
   },
   "dependencies": {
+    "@types/nunjucks": "^3.1.1",
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
     "vue": "^2.6.10",
@@ -20,6 +24,7 @@
   "devDependencies": {
     "@types/chai": "^4.1.0",
     "@types/mocha": "^5.2.4",
+    "@types/prettier": "^1.16.3",
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-eslint": "^3.7.0",
     "@vue/cli-plugin-typescript": "^3.7.0",
@@ -34,6 +39,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "nunjucks": "^3.2.0",
+    "ts-node": "^8.1.0",
     "typescript": "^3.4.3",
     "vue-template-compiler": "^2.5.21"
   }
