@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="6">
         <div class="serach">
-          <el-input placeholder="请输入搜索内容" suffix-icon="el-icon-search"></el-input>
+          <el-input placeholder="请输入搜索内容" v-model="keyword" suffix-icon="el-icon-search"></el-input>
           <el-button>搜索</el-button>
         </div>
         <div class="userCenter">
@@ -27,13 +27,13 @@
         :router="true"
       >
         <el-menu-item index="/index" route="/index">首页</el-menu-item>
-        <el-menu-item index="2">教师办事</el-menu-item>
-        <el-menu-item index="3">学生办事</el-menu-item>
+        <el-menu-item index="/teacher" route="/serviceList?type=teacher">教师办事</el-menu-item>
+        <el-menu-item index="/student" route="/serviceList?type=student">学生办事</el-menu-item>
         <el-menu-item index="4">结果公开</el-menu-item>
         <el-menu-item index="5">办事咨询</el-menu-item>
       </el-menu>
     </el-row>
-    <el-row v-if="curPath.path!=='/index'">
+    <el-row v-if="routeList.indexOf(curPath.path)===-1">
       <el-breadcrumb class="elBread" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="curPath.path">{{curPath.title}}</el-breadcrumb-item>
@@ -46,6 +46,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({})
 export default class Header extends Vue {
   activeIndex = "1";
+  keyword = "";
+  routeList = ["/index", "/teacher", "/student"];
   curPath = {
     path: "",
     title: ""
@@ -60,6 +62,13 @@ export default class Header extends Vue {
   @Watch("$route")
   getCurPath() {
     this.curPath.path = this.$route.path;
+    if (this.$route.path === "/serviceList") {
+      if (this.$route.query["type"] === "teacher") {
+        this.curPath.path = "/teacher";
+      } else {
+        this.curPath.path = "/student";
+      }
+    }
     this.curPath.title = this.$route.meta;
   }
 }

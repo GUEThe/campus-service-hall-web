@@ -1,8 +1,8 @@
-import Vue from "vue"
-import Router, { Route } from "vue-router"
-import Home from "./views/Home.vue"
+import Vue from "vue";
+import Router, { Route } from "vue-router";
+import Home from "./views/Home.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router: Router = new Router({
   mode: "history",
@@ -23,24 +23,30 @@ const router: Router = new Router({
       name: "login",
       meta: "登录",
       component: () => import("./views/login/index.vue")
-    },   {
+    },
+    {
       path: "/register",
       name: "register",
       meta: "注册",
       component: () => import("./views/register/index.vue")
     },
+    {
+      path: "/serviceList",
+      name: "serviceList",
+      component: () => import("./views/serviceList/index.vue")
+    }
   ]
-})
+});
 
 // 简单权限控制
-const whiteList: string[] = ["login", "signup"]
-const isLogin: boolean = false
+const whiteList: string[] = ["login", "signup"];
+const isLogin: boolean = false;
 router.beforeEach((to: Route, form: Route, next: Function) => {
   // 不在白名单内，没有登陆
   // if (whiteList.indexOf(to.name as string) === -1 && !isLogin) {
   //   next("/login")
   // }
-  next()
-})
+  next();
+});
 
-export default router
+export default router;
