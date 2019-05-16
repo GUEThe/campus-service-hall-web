@@ -71,6 +71,18 @@ export interface UserInfo {
    * @serverType string
    */
   name: string;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  phone: string;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  mail: string;
 }
 /*
  * @namespace models

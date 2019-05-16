@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router, { Route } from "vue-router";
-import Home from "./views/Home.vue";
+import { UserModule } from "@/store/modules/user";
 
 Vue.use(Router);
 
@@ -34,6 +34,16 @@ const router: Router = new Router({
       path: "/serviceList",
       name: "serviceList",
       component: () => import("./views/serviceList/index.vue")
+    },
+    {
+      path: "/serviceDetail",
+      name: "serviceDetail",
+      component: () => import("./views/serviceDetail/index.vue")
+    },
+    {
+      path: "/question",
+      name: "question",
+      component: () => import("./views/question/index.vue")
     }
   ]
 });
@@ -46,6 +56,7 @@ router.beforeEach((to: Route, form: Route, next: Function) => {
   // if (whiteList.indexOf(to.name as string) === -1 && !isLogin) {
   //   next("/login")
   // }
+  UserModule.GetUserInfo();
   next();
 });
 

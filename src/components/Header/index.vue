@@ -30,7 +30,8 @@
         <el-menu-item index="/teacher" route="/serviceList?type=teacher">教师办事</el-menu-item>
         <el-menu-item index="/student" route="/serviceList?type=student">学生办事</el-menu-item>
         <el-menu-item index="4">结果公开</el-menu-item>
-        <el-menu-item index="5">办事咨询</el-menu-item>
+        <el-menu-item index="/question">办事咨询</el-menu-item>
+        <el-menu-item index="6">办事指南</el-menu-item>
       </el-menu>
     </el-row>
     <el-row v-if="routeList.indexOf(curPath.path)===-1">
@@ -47,7 +48,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 export default class Header extends Vue {
   activeIndex = "1";
   keyword = "";
-  routeList = ["/index", "/teacher", "/student"];
+  routeList = ["/index", "/teacher", "/student", "/question"];
   curPath = {
     path: "",
     title: ""

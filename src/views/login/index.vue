@@ -47,6 +47,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Signin } from "@/api";
 import { SigninForm, TokenObj } from "../../api/models";
 import { Form } from "element-ui";
+import { UserModule } from "@/store/modules/user";
 
 @Component({})
 export default class Index extends Vue {
@@ -74,18 +75,26 @@ export default class Index extends Vue {
     (this.$refs.signinForm as Form).validate((valid: boolean) => {
       if (valid) {
         this.loading = true;
-        Signin({ signinForm: this.signinForm })
-          .then(resp => {
-            if (resp.code === 0) {
-              this.loading = false;
-              const tokenObj: TokenObj = resp.data!;
-              localStorage.setItem("token", tokenObj.token);
-              this.$message("登录成功！");
-            }
-          })
-          .catch(error => {
+        UserModule.Login(this.signinForm)
+          .then(() => {
             this.loading = false;
+            this.$router.push({ path: "/" });
+          })
+          .catch(() => {
+            this.loading = true;
           });
+        // Signin({ signinForm: this.signinForm })
+        //   .then(resp => {
+        //     if (resp.code === 0) {
+        //       this.loading = false;
+        //       const tokenObj: TokenObj = resp.data!;
+        //       localStorage.setItem("token", tokenObj.token);
+        //       this.$message("登录成功！");
+        //     }
+        //   })
+        //   .catch(error => {
+        //     this.loading = false;
+        //   });
       }
     });
   }

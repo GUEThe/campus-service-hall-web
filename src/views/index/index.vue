@@ -32,7 +32,7 @@
                 <span>{{item.title}}</span>
                 <div class="bottom clearfix">
                   <el-button type="text" class="button">在线办理</el-button>
-                  <el-button type="text" class="button">在线咨询</el-button>
+                  <el-button @click="askQ(item.id)" type="text" class="button">在线咨询</el-button>
                 </div>
               </div>
             </el-card>
@@ -91,6 +91,12 @@ export default class Index extends Vue {
     console.log(curPage);
     this.serversPage.page = curPage;
     this.getServiceList();
+  }
+  askQ(serviceId: number) {
+    this.$router.push({
+      path: "/serviceDetail",
+      query: { serviceId: serviceId.toString(), ask: "1" }
+    });
   }
 }
 </script>

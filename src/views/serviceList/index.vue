@@ -20,7 +20,7 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <el-card class="box-card">
+        <el-card type>
           <div slot="header" class="clearfix">
             <span>{{title}}</span>
             <el-tag style="float: right" type="text">共{{total}}个服务事项</el-tag>
@@ -41,7 +41,7 @@
               </template>
               <template slot-scope="scope">
                 <el-button size="mini">在线办理</el-button>
-                <el-button size="mini" type="infor">在线咨询</el-button>
+                <el-button size="mini" @click="askQ(scope.row.id)" type="info">在线咨询</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -102,6 +102,12 @@ export default class ServiceList extends Vue {
       deptment: 0
     };
     this.getServiceList();
+  }
+  askQ(serviceId: number) {
+    this.$router.push({
+      path: "/serviceDetail",
+      query: { serviceId: serviceId.toString(), ask: "1" }
+    });
   }
 }
 </script>
