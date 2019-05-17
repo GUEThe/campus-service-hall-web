@@ -907,7 +907,7 @@ export interface UserService {
    */
   comment: string;
   /**
-   *  int32
+   *  int64
    *
    * @serverType integer
    */

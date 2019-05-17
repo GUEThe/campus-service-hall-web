@@ -9,7 +9,7 @@
           :default-active="`${queryStr.deptment}`"
           @select="selectDept"
           v-if="departments"
-          background-color="#f2f2f2"
+          background-color="#f5f7fa"
         >
           <el-menu-item index="0">
             <span slot="title">全部</span>
@@ -20,16 +20,24 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <el-card type>
+        <el-card>
           <div slot="header" class="clearfix">
             <span>{{title}}</span>
             <el-tag style="float: right" type="text">共{{total}}个服务事项</el-tag>
           </div>
           <el-table v-if="serviceList" :data="serviceList" style="width: 100%">
             <el-table-column label="名称" prop="title"></el-table-column>
-            <el-table-column label="所属部门" prop="department"></el-table-column>
-            <el-table-column label="面向用户" prop="type"></el-table-column>
-            <el-table-column align="right">
+            <el-table-column label="所属部门">
+              <template slot-scope="scope">
+                <span>{{scope.row.department|DeptFilter}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="办事类型">
+              <template slot-scope="scope">
+                <span>{{scope.row.type|ServiceTypeFilter}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="190px">
               <template slot="header" slot-scope="scope">
                 <el-input
                   v-model="queryStr.keyword"
@@ -120,5 +128,10 @@ export default class ServiceList extends Vue {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.clearfix {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

@@ -62,7 +62,7 @@ class User extends VuexModule implements UserInfo {
   @Action
   public async GetUserInfo() {
     if (this.token === "") {
-      throw Error("GetUserInfo: token is undefined!");
+      return;
     }
     const { data } = await GetUserInfo();
     if (!data) {
@@ -88,6 +88,8 @@ class User extends VuexModule implements UserInfo {
     localStorage.removeItem("token");
     this.SET_TOKEN("");
     this.SET_ROLES([]);
+    this.SET_NAME("");
+    this.SET_PHONE("");
   }
   get getToken() {
     return this.token;

@@ -2,6 +2,8 @@ import Vue from "vue";
 import Router, { Route } from "vue-router";
 import { UserModule } from "@/store/modules/user";
 
+import { DeptModule } from "@/store/modules/dept";
+
 Vue.use(Router);
 
 const router: Router = new Router({
@@ -44,6 +46,11 @@ const router: Router = new Router({
       path: "/question",
       name: "question",
       component: () => import("./views/question/index.vue")
+    },
+    {
+      path: "/userCenter",
+      name: "userCenter",
+      component: () => import("./views/userCenter/index.vue")
     }
   ]
 });
@@ -57,6 +64,7 @@ router.beforeEach((to: Route, form: Route, next: Function) => {
   //   next("/login")
   // }
   UserModule.GetUserInfo();
+  DeptModule.GetDeptList();
   next();
 });
 

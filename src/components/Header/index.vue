@@ -11,14 +11,20 @@
         </div>
         <div class="userCenter">
           用户中心：
-          <el-link :underline="false" @click="navTo('/login')">登录</el-link>&nbsp;|&nbsp;
-          <el-link :underline="false" @click="navTo('/register')">注册</el-link>
+          <div v-if="!name">
+            <el-link :underline="false" @click="navTo('/login')">登录</el-link>&nbsp;|&nbsp;
+            <el-link :underline="false" @click="navTo('/register')">注册</el-link>
+          </div>
+          <div v-if="name">
+            <el-link :underline="false" @click="navTo('/userCenter')">{{name}}</el-link>&nbsp;|&nbsp;
+            <el-link :underline="false" @click="logout">退出登录</el-link>
+          </div>
         </div>
       </el-col>
     </el-row>
     <el-row class="menuRow" type="flex" justify="center">
       <el-menu
-        :default-active="curPath.path"
+        :default-active="indexPath.path"
         background-color="#006699"
         text-color="#FFFFFF"
         active-text-color="#ccffff"
@@ -29,48 +35,69 @@
         <el-menu-item index="/index" route="/index">首页</el-menu-item>
         <el-menu-item index="/teacher" route="/serviceList?type=teacher">教师办事</el-menu-item>
         <el-menu-item index="/student" route="/serviceList?type=student">学生办事</el-menu-item>
-        <el-menu-item index="4">结果公开</el-menu-item>
-        <el-menu-item index="/question">办事咨询</el-menu-item>
-        <el-menu-item index="6">办事指南</el-menu-item>
+
+        <el-menu-item index="/guide">办事指南</el-menu-item>
+        <el-menu-item index="/question">咨询电话</el-menu-item>
       </el-menu>
     </el-row>
-    <el-row v-if="routeList.indexOf(curPath.path)===-1">
+    <el-row v-if="routeList.indexOf(indexPath.path)===-1">
       <el-breadcrumb class="elBread" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="curPath.path">{{curPath.title}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="indexPath.path">{{indexPath.title}}</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
 @Component({})
 export default class Header extends Vue {
   activeIndex = "1";
   keyword = "";
-  routeList = ["/index", "/teacher", "/student", "/question"];
-  curPath = {
+  routeList = ["/index", "/teacher", "/student", "/question", "/guide"];
+  indexPath = {
+    path: "",
+    title: ""
+  };
+  secondPath = {
     path: "",
     title: ""
   };
   mounted() {
-    this.curPath.path = this.$route.path;
-    this.curPath.title = this.$route.meta;
+    this.indexPath.path = this.$route.path;
+    this.indexPath.title = this.$route.meta;
   }
   navTo(path: string) {
     this.$router.push(path);
   }
   @Watch("$route")
-  getCurPath() {
-    this.curPath.path = this.$route.path;
-    if (this.$route.path === "/serviceList") {
-      if (this.$route.query["type"] === "teacher") {
-        this.curPath.path = "/teacher";
-      } else {
-        this.curPath.path = "/student";
+  getindexPath() {
+    if (this.routeList.indexOf(this.$route.path) >= 0) {
+      this.indexPath.path = this.$route.path;
+      if (this.$route.path === "/serviceList") {
+        if (this.$route.query["type"] === "teacher") {
+          this.indexPath.path = "/teacher";
+        } else {
+          this.indexPath.path = "/student";
+        }
       }
+      this.indexPath.title = this.$route.meta;
+    } else {
+      this.secondPath.path = this.$route.path;
+      this.secondPath.title = this.$route.meta;
     }
-    this.curPath.title = this.$route.meta;
+  }
+
+  get name() {
+    return UserModule.name;
+  }
+
+  logout() {
+    UserModule.Logout().then(() => {
+      this.$message("退出登录成功！");
+      this.$router.push("/index");
+    });
   }
 }
 </script>
@@ -101,5 +128,8 @@ export default class Header extends Vue {
 <style lang="less">
 .el-link--inner {
   font-size: 16px;
+}
+.el-link {
+  vertical-align: unset !important;
 }
 </style>

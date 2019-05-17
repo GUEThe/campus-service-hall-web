@@ -78,6 +78,7 @@ export default class Index extends Vue {
         UserModule.Login(this.signinForm)
           .then(() => {
             this.loading = false;
+            this.$message("登录成功！");
             this.$router.push({ path: "/" });
           })
           .catch(() => {

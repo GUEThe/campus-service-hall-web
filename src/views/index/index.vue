@@ -11,7 +11,26 @@
       </el-carousel-item>
     </el-carousel>
     <el-tabs @tab-click="clickTab" class="serviceTab" value="hot" type="border-card">
-      <el-tab-pane label="热门办事" name="hot">热门办事列表</el-tab-pane>
+      <el-tab-pane label="热门办事" name="hot">
+        <el-row v-if="service" :gutter="20">
+          <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
+            <el-card :body-style="{ padding: '0px',textAlign:'center' }">
+              <div class="imageContainer">
+                <el-image class="serviceIcon" fit="contain" :src="item.icon">
+                  <i slot="error" class="el-icon-picture-outline"></i>
+                </el-image>
+              </div>
+              <div style="padding: 14px;">
+                <span>{{item.title}}</span>
+                <div class="bottom clearfix">
+                  <el-button type="text" class="button">在线办理</el-button>
+                  <el-button @click="askQ(item.id)" type="text" class="button">在线咨询</el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
       <el-tab-pane label="按部门办事" name="department">
         <el-row :gutter="20" v-if="departments">
           <el-col :span="6" v-for="item in departments" :key="item.id" style="margin-bottom:30px">
@@ -20,8 +39,8 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="全部办事" name="all">
-        <el-row v-if="servers" :gutter="20">
-          <el-col :span="6" v-for="item in servers" :key="item.id" style="margin-bottom:30px">
+        <el-row v-if="service" :gutter="20">
+          <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
             <el-card :body-style="{ padding: '0px',textAlign:'center' }">
               <div class="imageContainer">
                 <el-image class="serviceIcon" fit="contain" :src="item.icon">
@@ -39,10 +58,10 @@
           </el-col>
           <el-col class="pagination" :span="24">
             <el-pagination
-              :page-size="serversPage.pageSize"
+              :page-size="servicePage.pageSize"
               background
               layout="prev, pager, next"
-              :total="totalServers"
+              :total="totalservice"
               hide-on-single-page
               @current-change="changePage"
               @prev-click="changePage"
@@ -62,17 +81,24 @@ import { GetDepartmentList, GetServiceList } from "@/api";
 @Component({})
 export default class Index extends Vue {
   departments: Department[] | null = null;
-  servers: Service[] | null = null;
-  serversPage = {
+  service: Service[] | null = null;
+  servicePage = {
     page: 1,
     pageSize: 20
   };
-  totalServers = 0;
-  mounted() {}
+  totalservice = 0;
+  mounted() {
+    this.servicePage.pageSize = 8;
+    this.getServiceList();
+  }
   clickTab(tab: any) {
     if (tab.name === "department") {
       this.getDepartmentList();
     } else if (tab.name === "all") {
+      this.servicePage.pageSize = 20;
+      this.getServiceList();
+    } else if (tab.name === "hot") {
+      this.servicePage.pageSize = 8;
       this.getServiceList();
     }
   }
@@ -82,14 +108,14 @@ export default class Index extends Vue {
     });
   }
   getServiceList() {
-    GetServiceList(this.serversPage).then(resp => {
-      this.servers = resp.data!;
-      this.totalServers = resp.total;
+    GetServiceList(this.servicePage).then(resp => {
+      this.service = resp.data!;
+      this.totalservice = resp.total;
     });
   }
   changePage(curPage: number) {
     console.log(curPage);
-    this.serversPage.page = curPage;
+    this.servicePage.page = curPage;
     this.getServiceList();
   }
   askQ(serviceId: number) {

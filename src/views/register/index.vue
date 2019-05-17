@@ -174,15 +174,6 @@ export default class Index extends Vue {
       return "请输入学工号";
     }
   }
-
-  //   @Watch("signupForm")
-  //   strIdentify(newV: any) {
-  //     if (newV.role === "student") {
-  //       return "请输入学号";
-  //     } else {
-  //       return "请输入学工号";
-  //     }
-  //   }
 }
 </script>
 <style lang="less" scoped>
