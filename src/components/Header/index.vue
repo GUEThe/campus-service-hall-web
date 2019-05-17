@@ -7,7 +7,7 @@
       <el-col :span="6">
         <div class="serach">
           <el-input placeholder="请输入搜索内容" v-model="keyword" suffix-icon="el-icon-search"></el-input>
-          <el-button>搜索</el-button>
+          <el-button @click="search">搜索</el-button>
         </div>
         <div class="userCenter">
           用户中心：
@@ -86,6 +86,14 @@ export default class Header extends Vue {
       this.$message("退出登录成功！");
       this.$router.push("/index");
     });
+  }
+
+  search() {
+    this.$router.push({
+      path: "/searchList",
+      query: { keyword: this.keyword }
+    });
+    this.keyword = "";
   }
 }
 </script>

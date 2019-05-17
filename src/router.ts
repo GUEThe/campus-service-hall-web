@@ -53,6 +53,11 @@ const router: Router = new Router({
       path: "/phoneList",
       name: "phoneList",
       component: () => import("./views/phoneList/index.vue")
+    },
+    {
+      path: "/searchList",
+      name: "searchList",
+      component: () => import("./views/searchList/index.vue")
     }
   ]
 });

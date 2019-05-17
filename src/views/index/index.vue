@@ -34,7 +34,7 @@
       <el-tab-pane label="按部门办事" name="department">
         <el-row :gutter="20" v-if="departments">
           <el-col :span="6" v-for="item in departments" :key="item.id" style="margin-bottom:30px">
-            <el-button>{{item.name}}</el-button>
+            <el-button @click="navToDept(item.id)">{{item.name}}</el-button>
           </el-col>
         </el-row>
       </el-tab-pane>
@@ -127,6 +127,9 @@ export default class Index extends Vue {
 
   navTo(id: any) {
     this.$router.push({ path: "/serviceDetail", query: { serviceId: id } });
+  }
+  navToDept(id: any) {
+    this.$router.push({ path: "/searchList", query: { deptId: id } });
   }
 }
 </script>
