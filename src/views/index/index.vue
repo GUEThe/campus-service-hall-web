@@ -15,7 +15,7 @@
         <el-row v-if="service" :gutter="20">
           <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
             <el-card :body-style="{ padding: '0px',textAlign:'center' }">
-              <div class="imageContainer">
+              <div @click="navTo(item.id)" class="imageContainer">
                 <el-image class="serviceIcon" fit="contain" :src="item.icon">
                   <i slot="error" class="el-icon-picture-outline"></i>
                 </el-image>
@@ -42,7 +42,7 @@
         <el-row v-if="service" :gutter="20">
           <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
             <el-card :body-style="{ padding: '0px',textAlign:'center' }">
-              <div class="imageContainer">
+              <div @click="navTo(item.id)" class="imageContainer">
                 <el-image class="serviceIcon" fit="contain" :src="item.icon">
                   <i slot="error" class="el-icon-picture-outline"></i>
                 </el-image>
@@ -124,6 +124,10 @@ export default class Index extends Vue {
       query: { serviceId: serviceId.toString(), ask: "1" }
     });
   }
+
+  navTo(id: any) {
+    this.$router.push({ path: "/serviceDetail", query: { serviceId: id } });
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -154,6 +158,10 @@ export default class Index extends Vue {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.imageContainer:hover {
+  cursor: pointer;
 }
 
 .clearfix:before,

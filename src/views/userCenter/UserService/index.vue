@@ -53,4 +53,9 @@ export default class UserService extends Vue {
 }
 </script>
 <style lang="less" scoped>
+.clearfix {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

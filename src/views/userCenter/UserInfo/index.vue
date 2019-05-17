@@ -2,6 +2,7 @@
   <el-card>
     <div slot="header" class="clearfix">
       <span>个人信息</span>
+      <el-button type="primary">修改密码</el-button>
     </div>
     <el-form v-if="user" :model="user" :rules="rules" label-width="80px" ref="user">
       <el-form-item label="用户名" prop="username">
@@ -104,4 +105,9 @@ export default class UserService extends Vue {
 }
 </script>
 <style lang="less" scoped>
+.clearfix {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

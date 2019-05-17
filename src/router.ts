@@ -17,19 +17,16 @@ const router: Router = new Router({
     {
       path: "/index",
       name: "index",
-      meta: "首页",
       component: () => import("./views/index/index.vue")
     },
     {
       path: "/login",
       name: "login",
-      meta: "登录",
       component: () => import("./views/login/index.vue")
     },
     {
       path: "/register",
       name: "register",
-      meta: "注册",
       component: () => import("./views/register/index.vue")
     },
     {
@@ -51,6 +48,11 @@ const router: Router = new Router({
       path: "/userCenter",
       name: "userCenter",
       component: () => import("./views/userCenter/index.vue")
+    },
+    {
+      path: "/phoneList",
+      name: "phoneList",
+      component: () => import("./views/phoneList/index.vue")
     }
   ]
 });

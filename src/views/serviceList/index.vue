@@ -37,7 +37,7 @@
                 <span>{{scope.row.type|ServiceTypeFilter}}</span>
               </template>
             </el-table-column>
-            <el-table-column width="190px">
+            <el-table-column width="200px">
               <template slot="header" slot-scope="scope">
                 <el-input
                   v-model="queryStr.keyword"
@@ -48,8 +48,9 @@
                 />
               </template>
               <template slot-scope="scope">
-                <el-button size="mini">在线办理</el-button>
-                <el-button size="mini" @click="askQ(scope.row.id)" type="info">在线咨询</el-button>
+                <el-button type="text" @click="navTo(scope.row.id)" size="mini">查看详情</el-button>
+                <el-button type="text" size="mini" @click="askQ(scope.row.id)">在线咨询</el-button>
+                <el-button type="text" size="mini">在线办理</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -116,6 +117,10 @@ export default class ServiceList extends Vue {
       path: "/serviceDetail",
       query: { serviceId: serviceId.toString(), ask: "1" }
     });
+  }
+
+  navTo(id: any) {
+    this.$router.push({ path: "/serviceDetail", query: { serviceId: id } });
   }
 }
 </script>

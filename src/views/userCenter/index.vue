@@ -10,7 +10,7 @@
           <el-menu-item index="userService">
             <span slot="title">我的办事</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="userQuestion">
             <span slot="title">我的咨询</span>
           </el-menu-item>
           <el-menu-item index="userInfo">
@@ -21,6 +21,7 @@
       <el-col :span="18">
         <UserService v-if="selectIndex==='userService'"/>
         <UserInfo v-if="selectIndex==='userInfo'"/>
+        <UserQuestion v-if="selectIndex==='userQuestion'"/>
       </el-col>
     </el-row>
   </div>
@@ -30,11 +31,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
 import UserService from "./UserService/index.vue";
 import UserInfo from "./UserInfo/index.vue";
+import UserQuestion from "./UserQuestion/index.vue";
 
 @Component({
   components: {
     UserService,
-    UserInfo
+    UserInfo,
+    UserQuestion
   }
 })
 export default class UserCenter extends Vue {

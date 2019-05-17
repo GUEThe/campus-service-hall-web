@@ -24,7 +24,7 @@
     </el-row>
     <el-row class="menuRow" type="flex" justify="center">
       <el-menu
-        :default-active="indexPath.path"
+        :default-active="indexPath"
         background-color="#006699"
         text-color="#FFFFFF"
         active-text-color="#ccffff"
@@ -37,15 +37,15 @@
         <el-menu-item index="/student" route="/serviceList?type=student">学生办事</el-menu-item>
 
         <el-menu-item index="/guide">办事指南</el-menu-item>
-        <el-menu-item index="/question">咨询电话</el-menu-item>
+        <el-menu-item index="/phoneList">咨询电话</el-menu-item>
       </el-menu>
     </el-row>
-    <el-row v-if="routeList.indexOf(indexPath.path)===-1">
+    <!-- <el-row v-if="routeList.indexOf(indexPath.path)===-1">
       <el-breadcrumb class="elBread" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="indexPath.path">{{indexPath.title}}</el-breadcrumb-item>
       </el-breadcrumb>
-    </el-row>
+    </el-row>-->
   </div>
 </template>
 <script lang="ts">
@@ -55,18 +55,10 @@ import { UserModule } from "@/store/modules/user";
 export default class Header extends Vue {
   activeIndex = "1";
   keyword = "";
-  routeList = ["/index", "/teacher", "/student", "/question", "/guide"];
-  indexPath = {
-    path: "",
-    title: ""
-  };
-  secondPath = {
-    path: "",
-    title: ""
-  };
+  routeList = ["/index", "/teacher", "/student", "/phoneList", "/guide"];
+  indexPath = "";
   mounted() {
-    this.indexPath.path = this.$route.path;
-    this.indexPath.title = this.$route.meta;
+    this.indexPath = this.$route.path;
   }
   navTo(path: string) {
     this.$router.push(path);
@@ -74,18 +66,14 @@ export default class Header extends Vue {
   @Watch("$route")
   getindexPath() {
     if (this.routeList.indexOf(this.$route.path) >= 0) {
-      this.indexPath.path = this.$route.path;
+      this.indexPath = this.$route.path;
       if (this.$route.path === "/serviceList") {
         if (this.$route.query["type"] === "teacher") {
-          this.indexPath.path = "/teacher";
+          this.indexPath = "/teacher";
         } else {
-          this.indexPath.path = "/student";
+          this.indexPath = "/student";
         }
       }
-      this.indexPath.title = this.$route.meta;
-    } else {
-      this.secondPath.path = this.$route.path;
-      this.secondPath.title = this.$route.meta;
     }
   }
 

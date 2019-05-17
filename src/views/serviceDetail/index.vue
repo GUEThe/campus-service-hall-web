@@ -16,29 +16,29 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item class="elFormItem">
-                  <h6>服务名称</h6>
+                  <h6>申请打印成绩单</h6>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item class="elFormItem" label="所属部门">
-                  <span>所属部门</span>
+                  <span>教务处</span>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="elFormItem" label="面向用户">
-                  <span>面向用户</span>
+                  <span>学生</span>
                 </el-form-item>
               </el-col>
             </el-row>
 
             <el-form-item class="elFormItem" label="附件">
-              <span>附件</span>
+              <span>暂无附件</span>
             </el-form-item>
 
             <el-form-item class="elFormItem" label="详细说明">
-              <p>详细说明</p>
+              <p>请登录并在线申请办事,当在个人中心中查询到申请事项完结时说明事项已经处理完成。请于上班时间到办公楼405领取打印出来的成绩单。</p>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -55,28 +55,75 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item class="elFormItem" label="流程名称">
-                    <span>流程名称</span>
+                    <span>在线申请打印成绩单</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item class="elFormItem" label="流程附件">
-                    <span>流程附件</span>
+                    <span>暂无附件</span>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-form-item class="elFormItem" label="所属部门">
-                <span>所属部门</span>
+                <span>教务处</span>
               </el-form-item>
               <el-form-item class="elFormItem" label="流程详细说明">
-                <p>流程详细说明</p>
+                <p>申请，办结后于办公楼405领取成绩单。</p>
               </el-form-item>
             </div>
           </el-form>
         </el-collapse-item>
 
         <el-collapse-item title="咨询列表" name="3">
-          <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-          <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+          <el-table :data="questionViewList" style="width: 100%">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" label-width="100px" inline class="demo-table-expand">
+                  <el-row>
+                    <el-col :span="12">
+                      <el-form-item class="elFormItem" label="回复人">
+                        <span>{{ props.row.userNickname }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item class="elFormItem" label="回复时间">
+                        <span>{{ props.row.relpyTime|TimeFilter }}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
+                  <el-form-item class="elFormItem" label="回复内容">
+                    <span>{{ props.row.replyContent }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column label="标题" prop="title"></el-table-column>
+            <el-table-column label="内容" prop="content"></el-table-column>
+            <el-table-column label="提问时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.time|TimeFilter}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="回复状态">
+              <template slot-scope="scope">
+                <el-tag
+                  :type="scope.row.status===0?'info':''"
+                >{{scope.row.status|QuestionStatusFilter}}</el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <el-pagination
+            :page-size="questionViewListQuery.pageSize"
+            background
+            layout="prev, pager, next"
+            :total="totalservice"
+            hide-on-single-page
+            @current-change="changePage"
+            @prev-click="changePage"
+            @next-click="changePage"
+          ></el-pagination>
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -87,8 +134,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Service, ProcessView } from "@/api/models";
-import { GetService, GetProcessList } from "@/api";
+import { Service, ProcessView, QuestionView } from "@/api/models";
+import { GetService, GetProcessList, GetQuestionList } from "@/api";
 import AskQuestion from "@/components/Question/index.vue";
 @Component({
   components: {
@@ -100,10 +147,29 @@ export default class ServiceDeatil extends Vue {
   serviceId: number | null = null;
   service: Service | null = null;
   processViewList: ProcessView[] | null = null;
+  questionViewList: QuestionView[] | null = null;
+  questionViewListQuery = {
+    page: 1,
+    pageZise: 20,
+    serviceId: 0,
+    status: 2
+  };
+
+  changePage(curPage: number) {
+    console.log(curPage);
+    this.questionViewListQuery.page = curPage;
+    this.getQuestionList();
+  }
   mounted() {
+    if (!this.$route.query["serviceId"]) {
+      this.$router.go(-1);
+    }
     this.serviceId = this.$route.query["serviceId"]
       ? parseInt(this.$route.query["serviceId"] as string)
       : null;
+    this.questionViewListQuery.serviceId = this.$route.query["serviceId"]
+      ? parseInt(this.$route.query["serviceId"] as string)
+      : 0;
     console.log(this.$route.query, this.serviceId);
     if (this.$route.query["ask"]) {
       this.dialogTableVisible = true;
@@ -113,6 +179,12 @@ export default class ServiceDeatil extends Vue {
     });
     GetProcessList({ serviceId: this.serviceId as number }).then(resp => {
       this.processViewList = resp.data!;
+    });
+    this.getQuestionList();
+  }
+  getQuestionList() {
+    GetQuestionList(this.questionViewListQuery).then(resp => {
+      this.questionViewList = resp.data!;
     });
   }
 }

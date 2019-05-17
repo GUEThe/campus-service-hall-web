@@ -118,6 +118,12 @@ export interface Department {
    * @serverType integer
    */
   order: number;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  phone: string;
 }
 /*
  * @namespace models
