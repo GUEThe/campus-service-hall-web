@@ -82,7 +82,7 @@ export default class Index extends Vue {
             this.$router.push({ path: "/" });
           })
           .catch(() => {
-            this.loading = true;
+            this.loading = false;
           });
         // Signin({ signinForm: this.signinForm })
         //   .then(resp => {
