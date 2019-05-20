@@ -137,7 +137,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Service, ProcessView, QuestionView } from "@/api/models";
-import { GetService, GetProcessList, GetQuestionList ,GetFile} from "@/api";
+import { GetService, GetProcessList, GetServiceQuestionList ,GetFile} from "@/api";
 import AskQuestion from "@/components/Question/index.vue";
 @Component({
   components: {
@@ -191,7 +191,7 @@ export default class ServiceDeatil extends Vue {
     GetFile({guid});
   }
   getQuestionList() {
-    GetQuestionList(this.questionViewListQuery).then(resp => {
+    GetServiceQuestionList(this.questionViewListQuery).then(resp => {
       this.questionViewList = resp.data!;
     });
   }
