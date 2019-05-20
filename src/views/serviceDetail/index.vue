@@ -10,65 +10,76 @@
           type="text"
         >在线咨询</el-button>
       </div>
-      <el-collapse value="1">
+      <el-collapse v-model="activeName">
+   
         <el-collapse-item title="基本信息" name="1">
           <el-form label-position="left" class="demo-table-expand">
             <el-row>
               <el-col :span="24">
                 <el-form-item class="elFormItem">
-                  <h6>申请打印成绩单</h6>
+                  <h6>{{service.title}}</h6>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item class="elFormItem" label="所属部门">
-                  <span>教务处</span>
+                  <span>{{service.department|DeptFilter}}</span>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="elFormItem" label="面向用户">
-                  <span>学生</span>
+                  <span>{{service.type|ServiceTypeFilter}}</span>
                 </el-form-item>
               </el-col>
             </el-row>
+     <el-form-item class="elFormItem" label="标签分类">
+              <span>{{service.tags}}</span>
+            </el-form-item>
 
-            <el-form-item class="elFormItem" label="附件">
-              <span>暂无附件</span>
+            <el-form-item v-if="service.fileGUID" class="elFormItem" label="附件">
+              <span>点击下载</span>
             </el-form-item>
 
             <el-form-item class="elFormItem" label="详细说明">
-              <p>请登录并在线申请办事,当在个人中心中查询到申请事项完结时说明事项已经处理完成。请于上班时间到办公楼405领取打印出来的成绩单。</p>
+             <p v-html='service.description'></p>  
             </el-form-item>
           </el-form>
         </el-collapse-item>
-        <el-collapse-item title="办理流程" name="2">
+
+        <el-collapse-item title="办理流程" name="2"  >
+          
           <el-form label-position="left" class="demo-table-expand">
-            <div class="processCont">
+
+            <div v-for="(item,index) in processViewList" :key="item.id" class="processCont">
               <el-row>
                 <el-col :span="24">
                   <el-form-item class="elFormItem">
-                    <h6>流程1</h6>
+                    <h6>流程{{index+1}}</h6>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
                   <el-form-item class="elFormItem" label="流程名称">
-                    <span>在线申请打印成绩单</span>
+                    <span>{{item.name}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item class="elFormItem" label="流程附件">
-                    <span>暂无附件</span>
+                  <el-form-item class="elFormItem" label="相关附件">
+              
+                  <el-link :href="`/v1/api/Files/${item.fileGUID}`"  target="_blank">点击下载</el-link>
+               
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-form-item class="elFormItem" label="所属部门">
-                <span>教务处</span>
+                <span>{{item.departmentName}}</span>
               </el-form-item>
-              <el-form-item class="elFormItem" label="流程详细说明">
-                <p>申请，办结后于办公楼405领取成绩单。</p>
+              <el-form-item class="elFormItem" label="详细说明">
+               
+          <p v-html='item.description'></p>
+          
               </el-form-item>
             </div>
           </el-form>
@@ -79,22 +90,13 @@
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" label-width="100px" inline class="demo-table-expand">
-                  <el-row>
-                    <el-col :span="12">
-                      <el-form-item class="elFormItem" label="回复人">
-                        <span>{{ props.row.userNickname }}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item class="elFormItem" label="回复时间">
-                        <span>{{ props.row.relpyTime|TimeFilter }}</span>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-
+                
                   <el-form-item class="elFormItem" label="回复内容">
                     <span>{{ props.row.replyContent }}</span>
                   </el-form-item>
+                      <el-form-item class="elFormItem" label="回复时间">
+                        <span>{{ props.row.relpyTime|TimeFilter }}</span>
+                      </el-form-item>
                 </el-form>
               </template>
             </el-table-column>
@@ -135,7 +137,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Service, ProcessView, QuestionView } from "@/api/models";
-import { GetService, GetProcessList, GetQuestionList } from "@/api";
+import { GetService, GetProcessList, GetQuestionList ,GetFile} from "@/api";
 import AskQuestion from "@/components/Question/index.vue";
 @Component({
   components: {
@@ -148,11 +150,12 @@ export default class ServiceDeatil extends Vue {
   service: Service | null = null;
   processViewList: ProcessView[] | null = null;
   questionViewList: QuestionView[] | null = null;
+  activeName=['1','2'];
   questionViewListQuery = {
     page: 1,
     pageZise: 20,
     serviceId: 0,
-    status: 2
+    status: 1
   };
 
   changePage(curPage: number) {
@@ -176,11 +179,16 @@ export default class ServiceDeatil extends Vue {
     }
     GetService({ id: this.serviceId as number }).then(resp => {
       this.service = resp.data!;
+      console.log( this.service)
     });
     GetProcessList({ serviceId: this.serviceId as number }).then(resp => {
       this.processViewList = resp.data!;
     });
     this.getQuestionList();
+  }
+  download(guid:string)
+  {
+    GetFile({guid});
   }
   getQuestionList() {
     GetQuestionList(this.questionViewListQuery).then(resp => {
