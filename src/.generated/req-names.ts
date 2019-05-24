@@ -22,6 +22,7 @@ export const enum ReqNames {
   GetQuestionList = "GetQuestionList",
   PostQuestion = "PostQuestion",
   GetDepartmentQuestionList = "GetDepartmentQuestionList",
+  GetMyQuestionList = "GetMyQuestionList",
   GetServiceQuestionList = "GetServiceQuestionList",
   GetQuestion = "GetQuestion",
   PutQuestion = "PutQuestion",

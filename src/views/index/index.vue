@@ -23,7 +23,7 @@
               <div style="padding: 14px;">
                 <span>{{item.title}}</span>
                 <div class="bottom clearfix">
-                  <el-button type="text" class="button">在线办理</el-button>
+                  <el-button type="text" @click="application(item)" class="button">在线办理</el-button>
                   <el-button @click="askQ(item.id)" type="text" class="button">在线咨询</el-button>
                 </div>
               </div>
@@ -71,6 +71,9 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog width="30%" :visible.sync="show">
+      <ApplicationService @appliSuccess="show=false" :service="applService"/>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -78,7 +81,12 @@ import { Component, Vue } from "vue-property-decorator";
 import { Tabs } from "element-ui";
 import { Department, Service } from "@/api/models";
 import { GetDepartmentList, GetServiceList } from "@/api";
-@Component({})
+import ApplicationService from "@/components/Application/index.vue";
+@Component({
+  components: {
+    ApplicationService
+  }
+})
 export default class Index extends Vue {
   departments: Department[] | null = null;
   service: Service[] | null = null;
@@ -87,6 +95,8 @@ export default class Index extends Vue {
     pageSize: 20
   };
   totalservice = 0;
+  show = false;
+  applService: Service | null = null;
   mounted() {
     this.servicePage.pageSize = 8;
     this.getServiceList();
@@ -130,6 +140,10 @@ export default class Index extends Vue {
   }
   navToDept(id: any) {
     this.$router.push({ path: "/searchList", query: { deptId: id } });
+  }
+  application(service: Service) {
+    this.applService = service;
+    this.show = true;
   }
 }
 </script>

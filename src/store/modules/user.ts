@@ -90,6 +90,7 @@ class User extends VuexModule implements UserInfo {
     this.SET_ROLES([]);
     this.SET_NAME("");
     this.SET_PHONE("");
+    this.SET_MAIL("");
   }
   get getToken() {
     return this.token;

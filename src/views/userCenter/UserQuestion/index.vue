@@ -27,14 +27,14 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="标题" prop="title"></el-table-column>
-      <el-table-column label="内容" prop="content"></el-table-column>
-      <el-table-column label="提问时间">
+      <el-table-column align="center" label="标题" prop="title"></el-table-column>
+      <el-table-column align="center" label="内容" prop="content"></el-table-column>
+      <el-table-column align="center" label="提问时间" width="150">
         <template slot-scope="scope">
           <span>{{scope.row.time|TimeFilter}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="回复状态">
+      <el-table-column align="center" label="回复状态">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status===0?'info':''">{{scope.row.status|QuestionStatusFilter}}</el-tag>
         </template>

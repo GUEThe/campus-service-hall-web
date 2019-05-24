@@ -3,12 +3,7 @@
     <el-card>
       <div slot="header">
         <span>办事详情</span>
-        <el-button style="float: right; padding: 3px 0" type="text">在线办理</el-button>
-        <el-button
-          @click="dialogTableVisible=true"
-          style="float: right; padding: 3px 0"
-          type="text"
-        >在线咨询</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text">返回</el-button>
       </div>
       <el-collapse v-if="service" v-model="activeName">
         <el-collapse-item title="基本信息" name="1">
@@ -77,90 +72,22 @@
             </div>
           </el-form>
         </el-collapse-item>
-
-        <el-collapse-item title="咨询列表" name="3">
-          <el-table :data="questionViewList" style="width: 100%">
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" label-width="100px" inline class="demo-table-expand">
-                  <el-form-item class="elFormItem" label="回复内容">
-                    <span>{{ props.row.replyContent }}</span>
-                  </el-form-item>
-                  <el-form-item class="elFormItem" label="回复时间">
-                    <span>{{ props.row.relpyTime|TimeFilter }}</span>
-                  </el-form-item>
-                </el-form>
-              </template>
-            </el-table-column>
-            <el-table-column label="标题" prop="title"></el-table-column>
-            <el-table-column label="内容" prop="content"></el-table-column>
-            <el-table-column label="提问时间">
-              <template slot-scope="scope">
-                <span>{{scope.row.time|TimeFilter}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="回复状态">
-              <template slot-scope="scope">
-                <el-tag
-                  :type="scope.row.status===0?'info':''"
-                >{{scope.row.status|QuestionStatusFilter}}</el-tag>
-              </template>
-            </el-table-column>
-          </el-table>
-
-          <el-pagination
-            :page-size="questionViewListQuery.pageSize"
-            background
-            layout="prev, pager, next"
-            :total="totalQuestion"
-            hide-on-single-page
-            @current-change="changePage"
-            @prev-click="changePage"
-            @next-click="changePage"
-          ></el-pagination>
-        </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-dialog width="30%" :visible.sync="dialogTableVisible">
-      <AskQuestion @askQusetionUuccess="dialogTableVisible=false" :serviceId="serviceId"/>
-    </el-dialog>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Service, ProcessView, QuestionView } from "@/api/models";
-import {
-  GetService,
-  GetProcessList,
-  GetServiceQuestionList,
-  GetFile
-} from "@/api";
-import AskQuestion from "@/components/Question/index.vue";
-@Component({
-  components: {
-    AskQuestion
-  }
-})
+import { Service, ProcessView } from "@/api/models";
+import { GetService, GetProcessList, GetFile } from "@/api";
+@Component({})
 export default class ServiceDeatil extends Vue {
   dialogTableVisible = false;
   serviceId: number | null = null;
   service: Service | null = null;
   processViewList: ProcessView[] | null = null;
-  questionViewList: QuestionView[] | null = null;
   activeName = ["1", "2"];
-  questionViewListQuery = {
-    page: 1,
-    pageZise: 20,
-    serviceId: 0,
-    status: 1
-  };
   totalQuestion = 0;
-
-  changePage(curPage: number) {
-    console.log(curPage);
-    this.questionViewListQuery.page = curPage;
-    this.getQuestionList();
-  }
   mounted() {
     if (!this.$route.query["serviceId"]) {
       this.$router.go(-1);
@@ -168,9 +95,6 @@ export default class ServiceDeatil extends Vue {
     this.serviceId = this.$route.query["serviceId"]
       ? parseInt(this.$route.query["serviceId"] as string)
       : null;
-    this.questionViewListQuery.serviceId = this.$route.query["serviceId"]
-      ? parseInt(this.$route.query["serviceId"] as string)
-      : 0;
     console.log(this.$route.query, this.serviceId);
     if (this.$route.query["ask"]) {
       this.dialogTableVisible = true;
@@ -182,15 +106,6 @@ export default class ServiceDeatil extends Vue {
     GetProcessList({ serviceId: this.serviceId as number }).then(resp => {
       this.processViewList = resp.data!;
       this.totalQuestion = resp.total;
-    });
-    this.getQuestionList();
-  }
-  download(guid: string) {
-    GetFile({ guid });
-  }
-  getQuestionList() {
-    GetServiceQuestionList(this.questionViewListQuery).then(resp => {
-      this.questionViewList = resp.data!;
     });
   }
 }

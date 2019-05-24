@@ -711,6 +711,12 @@ export interface UserProcessView {
    * @serverType string
    */
   serviceTitle: string;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  userFileGUID: string;
 }
 /*
  * @namespace models
@@ -776,6 +782,12 @@ export interface UserProcess {
    * @serverType string
    */
   feedback: string;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  userFileGUID: string;
 }
 /*
  * @namespace models
@@ -900,6 +912,12 @@ export interface UserService {
    * @serverType integer
    */
   serviceId: number;
+  /**
+   *
+   *
+   * @serverType string
+   */
+  description: string;
   /**
    *  int32
    *

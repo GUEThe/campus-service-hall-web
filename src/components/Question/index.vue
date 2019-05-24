@@ -76,6 +76,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { GetServiceList, PostQuestion, GetQuestionList } from "@/api";
 import { Service, Question, QuestionView } from "@/api/models";
 import { Form } from "element-ui";
+import { UserModule } from "@/store/modules/user";
 
 interface MyQuestion {
   title: string;
@@ -142,6 +143,9 @@ export default class QuestionCom extends Vue {
   };
   mounted() {
     this.question.serviceId = this.serviceId as number;
+    this.question.phone = UserModule.phone || "";
+    this.question.mail = UserModule.mail || "";
+    this.question.name = UserModule.name || "";
     GetServiceList({ pageSize: 100 }).then(resp => {
       this.serviceList = resp.data!;
     });

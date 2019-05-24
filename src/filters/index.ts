@@ -30,7 +30,7 @@ Vue.filter("TimeFilter", (value: any) => {
   if (!value) {
     return "";
   }
-  return moment(value).format("YYYY-MM-DD HH:mm");
+  return moment(value - 8 * 3600 * 1000).format("YYYY-MM-DD HH:mm");
 });
 
 Vue.filter("QuestionStatusFilter", (value: number) => {
@@ -39,6 +39,17 @@ Vue.filter("QuestionStatusFilter", (value: number) => {
       return "已回复";
     case 0:
       return "未回复";
+    default:
+      return "";
+  }
+});
+
+Vue.filter("UserServiceStatusFilter", (value: number) => {
+  switch (value) {
+    case 1:
+      return "已完成";
+    case 0:
+      return "办理中";
     default:
       return "";
   }

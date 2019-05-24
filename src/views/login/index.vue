@@ -52,8 +52,8 @@ import { UserModule } from "@/store/modules/user";
 @Component({})
 export default class Index extends Vue {
   signinForm: SigninForm = {
-    password: "",
-    username: ""
+    password: "123456",
+    username: "465016310"
   };
   rules = {
     username: [{ required: true, message: "请输入用户名", trigger: "blur" }],

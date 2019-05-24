@@ -465,6 +465,39 @@ export function GetDepartmentQuestionList(options: {
 */
 
 /**
+ *
+ * @param page number integer
+ * @param pageSize number integer
+ */
+export function GetMyQuestionList(options: {
+  page?: number;
+  pageSize?: number;
+}): Promise<m.PageResponse<m.QuestionView[]>> {
+  const opts: ApiRequestOptions = {
+    url: `/api/Question/my`,
+    method: "get",
+    reqName: "GetMyQuestionList"
+  };
+
+  options.pageSize = options.pageSize || defaultPageSize;
+
+  opts.params = {
+    page: options.page,
+    pageSize: options.pageSize
+  };
+
+  return apiSendAsync<m.PageResponse<m.QuestionView[]>>(opts);
+}
+/*
+    export interface m.PageResponse&lt;m.QuestionView[]&gt; extends m.RestfulData{
+      data?: m.QuestionView[];
+      total: number;
+      page: number;
+      pageSize: number;
+    }
+*/
+
+/**
  * 办事事项咨询问题列表
  * @param page number integer 页码
  * @param pageSize number integer 每页数量
@@ -1070,8 +1103,8 @@ export function PostUserService(options: {
   return apiSendAsync<m.DataResponse<m.RestfulData>>(opts);
 }
 /*
-    export interface m.PageResponse&lt;m.UserService[]&gt; extends m.RestfulData{
-      data?: m.UserService[];
+    export interface m.PageResponse&lt;m.UserServiceView[]&gt; extends m.RestfulData{
+      data?: m.UserServiceView[];
       total: number;
       page: number;
       pageSize: number;
@@ -1086,7 +1119,7 @@ export function PostUserService(options: {
 export function GetMyServiceList(options: {
   page?: number;
   pageSize?: number;
-}): Promise<m.PageResponse<m.UserService[]>> {
+}): Promise<m.PageResponse<m.UserServiceView[]>> {
   const opts: ApiRequestOptions = {
     url: `/api/UserService/my`,
     method: "get",
@@ -1100,7 +1133,7 @@ export function GetMyServiceList(options: {
     pageSize: options.pageSize
   };
 
-  return apiSendAsync<m.PageResponse<m.UserService[]>>(opts);
+  return apiSendAsync<m.PageResponse<m.UserServiceView[]>>(opts);
 }
 /*
     export interface m.PageResponse&lt;m.UserServiceView[]&gt; extends m.RestfulData{
@@ -1169,8 +1202,8 @@ export function GetUserServiceViewList(options: {
   return apiSendAsync<m.PageResponse<m.UserService[]>>(opts);
 }
 /*
-    export interface m.DataResponse&lt;m.UserService&gt; extends m.RestfulData{
-      data?: m.UserService;
+    export interface m.DataResponse&lt;m.UserServiceView&gt; extends m.RestfulData{
+      data?: m.UserServiceView;
     }
 */
 
@@ -1180,14 +1213,14 @@ export function GetUserServiceViewList(options: {
  */
 export function GetUserService(options: {
   id: number;
-}): Promise<m.DataResponse<m.UserService>> {
+}): Promise<m.DataResponse<m.UserServiceView>> {
   const opts: ApiRequestOptions = {
     url: `/api/UserService/${options.id}`,
     method: "get",
     reqName: "GetUserService"
   };
 
-  return apiSendAsync<m.DataResponse<m.UserService>>(opts);
+  return apiSendAsync<m.DataResponse<m.UserServiceView>>(opts);
 }
 /*
     export interface m.DataResponse&lt;m.RestfulData&gt; extends m.RestfulData{
