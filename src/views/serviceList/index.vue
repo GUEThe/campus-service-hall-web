@@ -26,7 +26,11 @@
             <el-tag style="float: right" type="text">共{{total}}个服务事项</el-tag>
           </div>
           <el-table v-if="serviceList" :data="serviceList" style="width: 100%">
-            <el-table-column label="名称" prop="title"></el-table-column>
+            <el-table-column label="名称">
+              <template slot-scope="scope">
+                <el-button type="text" @click="navTo(scope.row.id)">{{scope.row.title}}</el-button>
+              </template>
+            </el-table-column>
             <el-table-column label="所属部门">
               <template slot-scope="scope">
                 <span>{{scope.row.department|DeptFilter}}</span>
@@ -48,12 +52,21 @@
                 />
               </template>
               <template slot-scope="scope">
-                <el-button type="text" @click="navTo(scope.row.id)" size="mini">查看详情</el-button>
-                <el-button type="text" size="mini" @click="askQ(scope.row.id)">在线咨询</el-button>
-                <el-button type="text" size="mini">在线办理</el-button>
+                <el-button type="text" @click="askQ(scope.row.id)">在线咨询</el-button>
+                <el-button type="text">在线办理</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            :page-size="queryStr.pageSize"
+            background
+            layout="prev, pager, next"
+            :total="total"
+            hide-on-single-page
+            @current-change="changePage"
+            @prev-click="changePage"
+            @next-click="changePage"
+          ></el-pagination>
         </el-card>
       </el-col>
     </el-row>
@@ -70,7 +83,7 @@ export default class ServiceList extends Vue {
   total = 0;
   queryStr = {
     page: 1,
-    pageSize: 2,
+    pageSize: 20,
     keyword: "",
     type: 0,
     deptment: 0
@@ -121,6 +134,12 @@ export default class ServiceList extends Vue {
 
   navTo(id: any) {
     this.$router.push({ path: "/serviceDetail", query: { serviceId: id } });
+  }
+
+  changePage(curPage: number) {
+    console.log(curPage);
+    this.queryStr.page = curPage;
+    this.getServiceList();
   }
 }
 </script>

@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column align="center" fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small">查看详情</el-button>
+          <el-button type="text" @click="userServiceDetail(scope.row.id)" size="small">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,6 +82,10 @@ export default class UserService extends Vue {
 
   index(val: number) {
     return (this.query.page - 1) * this.query.pageSize + val + 1;
+  }
+
+  userServiceDetail(id: number) {
+    this.$emit("showServiceDetail", id);
   }
 }
 </script>

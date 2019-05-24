@@ -1,14 +1,13 @@
 <template>
   <div class="app-container">
     <el-card>
-      <div slot="header">
+      <div class="cardHeader" slot="header">
         <span>办事详情</span>
-        <el-button style="float: right; padding: 3px 0" type="text">在线办理</el-button>
-        <el-button
-          @click="dialogTableVisible=true"
-          style="float: right; padding: 3px 0"
-          type="text"
-        >在线咨询</el-button>
+        <div>
+          <el-button style="padding: 3px 0" type="text">在线办理</el-button>
+          <el-button style="padding: 3px 0" @click="dialogTableVisible=true" type="text">在线咨询</el-button>
+          <el-button style="padding: 3px 0" @click="goBack" type="text">返回</el-button>
+        </div>
       </div>
       <el-collapse v-if="service" v-model="activeName">
         <el-collapse-item title="基本信息" name="1">
@@ -193,6 +192,9 @@ export default class ServiceDeatil extends Vue {
       this.questionViewList = resp.data!;
     });
   }
+  goBack() {
+    this.$router.go(-1);
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -216,5 +218,10 @@ h6 {
 }
 .elFormItem {
   margin: 0px;
+}
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

@@ -634,12 +634,6 @@ export interface UserProcessView {
    */
   time: number;
   /**
-   *
-   *
-   * @serverType string
-   */
-  fileGUID: string;
-  /**
    *  int32
    *
    * @serverType integer
@@ -716,6 +710,12 @@ export interface UserProcessView {
    *
    * @serverType string
    */
+  processFileGUID: string;
+  /**
+   *
+   *
+   * @serverType string
+   */
   userFileGUID: string;
 }
 /*
@@ -782,12 +782,6 @@ export interface UserProcess {
    * @serverType string
    */
   feedback: string;
-  /**
-   *
-   *
-   * @serverType string
-   */
-  userFileGUID: string;
 }
 /*
  * @namespace models
@@ -824,13 +818,13 @@ export interface UserServiceView {
    */
   comment: string;
   /**
-   *  int32
+   *  int64
    *
    * @serverType integer
    */
   time: number;
   /**
-   *  int32
+   *  int64
    *
    * @serverType integer
    */

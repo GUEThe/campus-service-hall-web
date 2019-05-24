@@ -19,9 +19,13 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <UserService v-if="selectIndex==='userService'"/>
+        <UserService
+          @showServiceDetail="showServiceDetail"
+          v-if="selectIndex==='userService'&&!showDetail"
+        />
         <UserInfo v-if="selectIndex==='userInfo'"/>
         <UserQuestion v-if="selectIndex==='userQuestion'"/>
+        <UserServiceDetail @go-back="goBack" :userServiceId="userServiceId" v-if="showDetail"/>
       </el-col>
     </el-row>
   </div>
@@ -32,19 +36,31 @@ import { UserModule } from "@/store/modules/user";
 import UserService from "./UserService/index.vue";
 import UserInfo from "./UserInfo/index.vue";
 import UserQuestion from "./UserQuestion/index.vue";
+import UserServiceDetail from "./UserServiceDetail/index.vue";
 
 @Component({
   components: {
     UserService,
     UserInfo,
-    UserQuestion
+    UserQuestion,
+    UserServiceDetail
   }
 })
 export default class UserCenter extends Vue {
   selectIndex = "userService";
+  showDetail = false;
+  userServiceId = 0;
   mounted() {}
   selectItem(index: string) {
     this.selectIndex = index;
+    this.showDetail = false;
+  }
+  showServiceDetail(id: number) {
+    this.userServiceId = id;
+    this.showDetail = true;
+  }
+  goBack() {
+    this.showDetail = false;
   }
   get name() {
     return UserModule.name;

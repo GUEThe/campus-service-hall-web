@@ -49,7 +49,7 @@ export const enum ReqNames {
   GetMyServiceList = "GetMyServiceList",
   GetDepartmentUserServiceList = "GetDepartmentUserServiceList",
   GetUserServiceViewList = "GetUserServiceViewList",
-  GetUserService = "GetUserService",
+  GetUserServiceView = "GetUserServiceView",
   PutUserService = "PutUserService",
   DeleteUserServic = "DeleteUserServic"
 }

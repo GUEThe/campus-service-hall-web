@@ -1208,16 +1208,16 @@ export function GetUserServiceViewList(options: {
 */
 
 /**
- * 单位办事连接查询列表
+ *
  * @param id number integer
  */
-export function GetUserService(options: {
+export function GetUserServiceView(options: {
   id: number;
 }): Promise<m.DataResponse<m.UserServiceView>> {
   const opts: ApiRequestOptions = {
     url: `/api/UserService/${options.id}`,
     method: "get",
-    reqName: "GetUserService"
+    reqName: "GetUserServiceView"
   };
 
   return apiSendAsync<m.DataResponse<m.UserServiceView>>(opts);
