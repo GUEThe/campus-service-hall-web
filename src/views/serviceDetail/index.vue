@@ -4,7 +4,7 @@
       <div class="cardHeader" slot="header">
         <span>办事详情</span>
         <div>
-          <el-button style="padding: 3px 0" type="text">在线办理</el-button>
+          <el-button style="padding: 3px 0" @click="show=true" type="text">在线办理</el-button>
           <el-button style="padding: 3px 0" @click="dialogTableVisible=true" type="text">在线咨询</el-button>
           <el-button style="padding: 3px 0" @click="goBack" type="text">返回</el-button>
         </div>
@@ -122,6 +122,9 @@
     </el-card>
     <el-dialog width="30%" :visible.sync="dialogTableVisible">
       <AskQuestion @askQusetionUuccess="dialogTableVisible=false" :serviceId="serviceId"/>
+    </el-dialog>
+    <el-dialog width="30%" :visible.sync="show">
+      <ApplicationService @appliSuccess="show=false" :service="service"/>
     </el-dialog>
   </div>
 </template>

@@ -50,7 +50,13 @@ export default class UserCenter extends Vue {
   selectIndex = "userService";
   showDetail = false;
   userServiceId = 0;
-  mounted() {}
+  mounted() {
+    console.log(this.$route.params);
+    if (this.$route.params["userServiceId"]) {
+      this.showDetail = true;
+      this.userServiceId = parseInt(this.$route.params["userServiceId"]);
+    }
+  }
   selectItem(index: string) {
     this.selectIndex = index;
     this.showDetail = false;

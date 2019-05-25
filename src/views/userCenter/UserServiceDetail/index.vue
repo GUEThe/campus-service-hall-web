@@ -46,14 +46,24 @@
             <el-row>
               <el-col style="display: flex;align-items: center;position: unset;" class="elFormItem">
                 <span>流程{{index+1}}</span>
+                <el-tag
+                  v-if="item.status==0"
+                  style="position: absolute;right: 0;"
+                >{{item.status|UserProcessStatusFilter}}</el-tag>
 
                 <el-tag
                   v-if="item.status==-1"
+                  type="info"
                   style="position: absolute;right: 0;"
                 >{{item.status|UserProcessStatusFilter}}</el-tag>
                 <el-tag
                   v-if="item.status==1"
                   type="success"
+                  style="position: absolute;right: 0;"
+                >{{item.status|UserProcessStatusFilter}}</el-tag>
+                <el-tag
+                  v-if="item.status==2"
+                  type="danger"
                   style="position: absolute;right: 0;"
                 >{{item.status|UserProcessStatusFilter}}</el-tag>
               </el-col>
