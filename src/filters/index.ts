@@ -54,3 +54,14 @@ Vue.filter("UserServiceStatusFilter", (value: number) => {
       return "";
   }
 });
+
+Vue.filter("UserProcessStatusFilter", (value: number) => {
+  switch (value) {
+    case -1:
+      return "办理中";
+    case 1:
+      return "已完成";
+    default:
+      return "";
+  }
+});

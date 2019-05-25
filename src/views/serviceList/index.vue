@@ -53,7 +53,8 @@
               </template>
               <template slot-scope="scope">
                 <el-button type="text" @click="askQ(scope.row.id)">在线咨询</el-button>
-                <el-button type="text">在线办理</el-button>
+
+                <el-button type="text" @click="application(scope.row)" class="button">在线办理</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,13 +71,21 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog width="30%" :visible.sync="show">
+      <ApplicationService @appliSuccess="show=false" :service="applService"/>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { GetDepartmentList, GetSearchServiceList } from "@/api";
 import { Service, Department } from "@/api/models";
-@Component({})
+import ApplicationService from "@/components/Application/index.vue";
+@Component({
+  components: {
+    ApplicationService
+  }
+})
 export default class ServiceList extends Vue {
   title = "";
   serviceList: Service[] | null = null;
@@ -90,6 +99,8 @@ export default class ServiceList extends Vue {
   };
 
   departments: Department[] | null = null;
+  show = false;
+  applService: Service | null = null;
   beforeMount() {
     this.title =
       this.$route.query["type"] === "teacher" ? "教师办事" : "学生办事";
@@ -140,6 +151,11 @@ export default class ServiceList extends Vue {
     console.log(curPage);
     this.queryStr.page = curPage;
     this.getServiceList();
+  }
+
+  application(service: Service) {
+    this.applService = service;
+    this.show = true;
   }
 }
 </script>

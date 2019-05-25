@@ -50,7 +50,7 @@
               <div style="padding: 14px;">
                 <span>{{item.title}}</span>
                 <div class="bottom clearfix">
-                  <el-button type="text" class="button">在线办理</el-button>
+                  <el-button type="text" @click="application(item)" class="button">在线办理</el-button>
                   <el-button @click="askQ(item.id)" type="text" class="button">在线咨询</el-button>
                 </div>
               </div>

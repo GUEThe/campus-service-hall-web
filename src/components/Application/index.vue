@@ -47,7 +47,7 @@ export default class Index extends Vue {
 
     PostUserService({ value: this.form as UserService }).then(resp => {
       if (resp.code === 0) {
-        this.$message({ type: "success", message: "申请办事成功！" });
+        this.$message({ type: "success", message: "申请办事成功！请至个人中心查看是否需要上传附件" });
         this.loading = false;
         this.$emit("appliSuccess");
       }

@@ -51,7 +51,7 @@
           <template slot-scope="scope">
             <el-button type="text" @click="navTo(scope.row.id)" size="mini">查看详情</el-button>
             <el-button type="text" size="mini" @click="askQ(scope.row.id)">在线咨询</el-button>
-            <el-button type="text" size="mini">在线办理</el-button>
+            <el-button type="text" size="mini" @click="application(scope.row)">在线办理</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -66,6 +66,9 @@
         @next-click="changePage"
       ></el-pagination>
     </el-card>
+    <el-dialog width="30%" :visible.sync="show">
+      <ApplicationService @appliSuccess="show=false" :service="applService"/>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -73,8 +76,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { GetDepartmentList, GetSearchServiceList } from "@/api";
 import { Service, Department } from "@/api/models";
 import { DeptModule } from "@/store/modules/dept";
+import ApplicationService from "@/components/Application/index.vue";
 
-@Component({})
+@Component({
+  components: {
+    ApplicationService
+  }
+})
 export default class Index extends Vue {
   total = 0;
   serviceList: Service[] | null = null;
@@ -85,6 +93,8 @@ export default class Index extends Vue {
     type: "",
     deptment: ""
   };
+  show = false;
+  applService: Service | null = null;
   mounted() {
     this.queryStr.keyword = this.$route.query["keyword"]
       ? this.$route.query["keyword"]
@@ -107,6 +117,16 @@ export default class Index extends Vue {
   }
   get deptList(): Department[] {
     return DeptModule.getDept;
+  }
+  askQ(serviceId: number) {
+    this.$router.push({
+      path: "/serviceDetail",
+      query: { serviceId: serviceId.toString(), ask: "1" }
+    });
+  }
+  application(service: Service) {
+    this.applService = service;
+    this.show = true;
   }
 }
 </script>
