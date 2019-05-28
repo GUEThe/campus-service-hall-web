@@ -56,16 +56,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Service, ProcessView, QuestionView } from "@/api/models";
-import { GetService, GetProcessList, GetQuestionList } from "@/api";
+import { GetService, GetProcessList, GetMyQuestionList } from "@/api";
 @Component({})
 export default class UserService extends Vue {
   total = 4;
   questionViewList: QuestionView[] | null = null;
   questionViewListQuery = {
     page: 1,
-    pageZise: 20,
-    serviceId: 0,
-    status: 2
+    pageZise: 20
   };
   changePage(curPage: number) {
     console.log(curPage);
@@ -76,7 +74,7 @@ export default class UserService extends Vue {
     this.getQuestionList();
   }
   getQuestionList() {
-    GetQuestionList(this.questionViewListQuery).then(resp => {
+    GetMyQuestionList(this.questionViewListQuery).then(resp => {
       this.questionViewList = resp.data!;
       this.total = resp.total;
     });

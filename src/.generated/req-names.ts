@@ -13,6 +13,7 @@ export const enum ReqNames {
   PutDepartment = "PutDepartment",
   DeleteDepartment = "DeleteDepartment",
   GetFile = "GetFile",
+  UserProcessUploadFile = "UserProcessUploadFile",
   GetProcessList = "GetProcessList",
   PostProcess = "PostProcess",
   GetDepartmentProcessList = "GetDepartmentProcessList",

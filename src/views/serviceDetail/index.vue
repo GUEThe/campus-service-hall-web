@@ -156,7 +156,7 @@ export default class ServiceDeatil extends Vue {
     page: 1,
     pageZise: 20,
     serviceId: 0,
-    status: 1
+    status: 2
   };
   totalQuestion = 0;
   show = false;
