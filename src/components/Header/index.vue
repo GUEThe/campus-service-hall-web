@@ -51,6 +51,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
+import { EventBus } from "@/utils/eventBus";
 @Component({})
 export default class Header extends Vue {
   activeIndex = "1";
@@ -93,6 +94,7 @@ export default class Header extends Vue {
       path: "/searchList",
       query: { keyword: this.keyword }
     });
+    EventBus.$emit("g-search", this.keyword);
     this.keyword = "";
   }
 }

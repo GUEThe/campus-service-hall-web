@@ -77,7 +77,7 @@ import { GetDepartmentList, GetSearchServiceList } from "@/api";
 import { Service, Department } from "@/api/models";
 import { DeptModule } from "@/store/modules/dept";
 import ApplicationService from "@/components/Application/index.vue";
-
+import { EventBus } from "@/utils/eventBus";
 @Component({
   components: {
     ApplicationService
@@ -103,6 +103,12 @@ export default class Index extends Vue {
       ? this.$route.query["deptId"]
       : "";
     this.getServiceList();
+    EventBus.$on("g-search", this.keywordQuery);
+  }
+  keywordQuery(keyword: string) {
+    this.queryStr.keyword = keyword;
+    this.queryStr.page = 1;
+    this.getServiceList();
   }
   getServiceList() {
     GetSearchServiceList(this.queryStr as any).then(resp => {
@@ -127,6 +133,9 @@ export default class Index extends Vue {
   application(service: Service) {
     this.applService = service;
     this.show = true;
+  }
+  destroyed() {
+    EventBus.$off("g-search", this.keywordQuery);
   }
 }
 </script>
