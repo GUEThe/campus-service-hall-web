@@ -138,9 +138,11 @@ import {
   GetFile
 } from "@/api";
 import AskQuestion from "@/components/Question/index.vue";
+import ApplicationService from "@/components/Application/index.vue";
 @Component({
   components: {
-    AskQuestion
+    AskQuestion,
+    ApplicationService
   }
 })
 export default class ServiceDeatil extends Vue {
@@ -157,7 +159,7 @@ export default class ServiceDeatil extends Vue {
     status: 1
   };
   totalQuestion = 0;
-
+  show = false;
   changePage(curPage: number) {
     console.log(curPage);
     this.questionViewListQuery.page = curPage;
