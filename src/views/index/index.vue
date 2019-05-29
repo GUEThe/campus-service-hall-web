@@ -16,7 +16,7 @@
           <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
             <el-card :body-style="{ padding: '0px',textAlign:'center' }">
               <div @click="navTo(item.id)" class="imageContainer">
-                <el-image class="serviceIcon" fit="contain" :src="item.icon">
+                <el-image class="serviceIcon" fit="contain" :src="`/v1/${item.icon}`">
                   <i slot="error" class="el-icon-picture-outline"></i>
                 </el-image>
               </div>
@@ -43,7 +43,7 @@
           <el-col :span="6" v-for="item in service" :key="item.id" style="margin-bottom:30px">
             <el-card :body-style="{ padding: '0px',textAlign:'center' }">
               <div @click="navTo(item.id)" class="imageContainer">
-                <el-image class="serviceIcon" fit="contain" :src="item.icon">
+                <el-image class="serviceIcon" fit="contain" :src="`/v1/${item.icon}`">
                   <i slot="error" class="el-icon-picture-outline"></i>
                 </el-image>
               </div>
