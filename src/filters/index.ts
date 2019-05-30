@@ -46,10 +46,14 @@ Vue.filter("QuestionStatusFilter", (value: number) => {
 
 Vue.filter("UserServiceStatusFilter", (value: number) => {
   switch (value) {
-    case 1:
+    case 2:
       return "已完成";
-    case 0:
+    case 1:
       return "办理中";
+      case 0:
+        return "审核不通过";
+        case -1:
+          return "待办理";
     default:
       return "";
   }
