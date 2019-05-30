@@ -104,7 +104,7 @@ export default class ServiceList extends Vue {
   beforeMount() {
     this.title =
       this.$route.query["type"] === "teacher" ? "教师办事" : "学生办事";
-    this.queryStr.type = this.$route.query["type"] === "teacher" ? 1 : 2;
+    this.queryStr.type = this.$route.query["type"] === "teacher" ? 2 : 1;
     this.getServiceList();
     this.getDepartmentList();
   }
@@ -129,9 +129,9 @@ export default class ServiceList extends Vue {
       this.$route.query["type"] === "teacher" ? "教师办事" : "学生办事";
     this.queryStr = {
       page: 1,
-      pageSize: 2,
+      pageSize: 20,
       keyword: "",
-      type: this.$route.query["type"] === "teacher" ? 1 : 2,
+      type: this.$route.query["type"] === "teacher" ? 2 : 1,
       deptment: 0
     };
     this.getServiceList();

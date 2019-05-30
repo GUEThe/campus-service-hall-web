@@ -6,9 +6,9 @@ import { DeptModule } from "@/store/modules/dept";
 
 Vue.filter("ServiceTypeFilter", (value: number) => {
   switch (value) {
-    case 1:
-      return "教师办事";
     case 2:
+      return "教师办事";
+    case 1:
       return "学生办事";
     default:
       return "普通办事";
