@@ -60,6 +60,7 @@ export default class Header extends Vue {
   indexPath = "";
   mounted() {
     this.indexPath = this.$route.path;
+    EventBus.$on("changePassword", this.logout);
   }
   navTo(path: string) {
     this.$router.push(path);
@@ -77,7 +78,9 @@ export default class Header extends Vue {
       }
     }
   }
-
+  destroyed() {
+    EventBus.$off("changePassword", this.logout);
+  }
   get name() {
     return UserModule.name;
   }

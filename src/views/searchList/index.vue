@@ -137,6 +137,9 @@ export default class Index extends Vue {
   destroyed() {
     EventBus.$off("g-search", this.keywordQuery);
   }
+  navTo(id: any) {
+    this.$router.push({ path: "/serviceDetail", query: { serviceId: id } });
+  }
 }
 </script>
 <style lang="less" scoped>

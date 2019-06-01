@@ -95,8 +95,6 @@ apiAxios.interceptors.response.use(
 );
 
 async function apiRequest<R>(reqOptions: ApiRequestOptions): Promise<R> {
-  const options = Object.assign(defaultAxiosOptions, reqOptions);
-
   const promise = new Promise(async (resolve, reject) => {
     try {
       const res = await apiAxios(reqOptions);
@@ -111,11 +109,9 @@ async function apiRequest<R>(reqOptions: ApiRequestOptions): Promise<R> {
 }
 
 async function apiSendAsync<R>(opts: AxiosRequestConfig): Promise<R> {
-  const options = Object.assign(defaultAxiosOptions, opts);
-
   const promise = new Promise(async (resolve, reject) => {
     try {
-      const res = await apiAxios(options);
+      const res = await apiAxios(opts);
       resolve(res.data as R);
     } catch (error) {
       reject(error);

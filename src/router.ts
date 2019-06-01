@@ -39,11 +39,11 @@ const router: Router = new Router({
       name: "serviceDetail",
       component: () => import("./views/serviceDetail/index.vue")
     },
-    {
-      path: "/question",
-      name: "question",
-      component: () => import("./views/question/index.vue")
-    },
+    // {
+    //   path: "/question",
+    //   name: "question",
+    //   component: () => import("./views/question/index.vue")
+    // },
     {
       path: "/userCenter",
       name: "userCenter",

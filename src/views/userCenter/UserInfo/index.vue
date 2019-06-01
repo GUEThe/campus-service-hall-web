@@ -2,7 +2,7 @@
   <el-card>
     <div slot="header" class="clearfix">
       <span>个人信息</span>
-      <el-button type="primary">修改密码</el-button>
+      <el-button @click="dialogFormVisible=true" type="primary">修改密码</el-button>
     </div>
     <el-form v-if="user" :model="user" :rules="rules" label-width="80px" ref="user">
       <el-form-item label="用户名" prop="username">
@@ -59,6 +59,27 @@
         <el-button style="width:100%" :loading="loading" @click="putUserInfo" type="primary">更 新</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog
+      width="30%"
+      :before-close="()=> false"
+      :show-close="false"
+      title="修改密码"
+      :visible.sync="dialogFormVisible"
+    >
+      <el-form :model="form" ref="changePasswordForm" :rules="rule">
+        <el-form-item required label="旧密码" prop="oldPassword">
+          <el-input v-model="form.oldPassword" show-password autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item required label="新密码" prop="newPassword">
+          <el-input v-model="form.newPassword" show-password autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item required label="确认新密码" prop="confirmPassword">
+          <el-input v-model="form.confirmPassword" show-password autocomplete="off"></el-input>
+        </el-form-item>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="changePassword">确 定</el-button>
+      </el-form>
+    </el-dialog>
   </el-card>
 </template>
 <script lang="ts">
@@ -66,11 +87,14 @@ import { Component, Vue } from "vue-property-decorator";
 import { GetUser, PutUser } from "@/api";
 import { User } from "@/api/models";
 import { validateMail } from "@/utils";
+import { Form } from "element-ui";
+import { EventBus } from "@/utils/eventBus";
 
 @Component({})
 export default class UserService extends Vue {
   user: User | null = null;
   loading = false;
+  dialogFormVisible = false;
   rules = {
     name: [
       { required: true, message: "请输入姓名", trigger: ["blur", "change"] }
@@ -88,13 +112,65 @@ export default class UserService extends Vue {
       { min: 6, message: "密码长度6位以上", trigger: ["blur", "change"] }
     ]
   };
+
+  validatePass: any = null;
+  validatePass2: any = null;
+
+  form = {
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  };
+  rule = {};
   mounted() {
     GetUser({ id: 0 }).then(resp => {
       this.user = resp.data!;
+      this.validatePass = (rule: any, value: any, callback: any) => {
+        if (value === "") {
+          callback(new Error("请输入旧密码"));
+        } else {
+          if (this.form.oldPassword !== this.user!.password) {
+            callback(new Error("旧密码不正确"));
+          }
+          callback();
+        }
+      };
+      this.validatePass2 = (rule: any, value: any, callback: any) => {
+        if (value === "") {
+          callback(new Error("请再次输入密码"));
+        } else if (value !== this.form.newPassword) {
+          callback(new Error("两次输入密码不一致!"));
+        } else {
+          callback();
+        }
+      };
+      this.rule = {
+        oldPassword: [{ validator: this.validatePass, trigger: "blur" }],
+        newPassword: [
+          { required: true, message: "请输入新密码", trigger: "blur" }
+        ],
+        confirmPassword: [{ validator: this.validatePass2, trigger: "blur" }]
+      };
     });
   }
-  putUserInfo() {}
-
+  putUserInfo(cP: boolean) {
+    PutUser({ value: this.user as User, id: this.user!.id.toString() }).then(
+      resp => {
+        this.$message({ type: "success", message: "更新成功！" });
+        if (cP) {
+          EventBus.$emit("changePassword");
+        }
+      }
+    );
+  }
+  changePassword() {
+    (this.$refs.changePasswordForm as Form).validate(val => {
+      if (val) {
+        this.user!.password = this.form.newPassword;
+        this.putUserInfo(true);
+      }
+    });
+  }
   get strIdentify() {
     if ((this.user as User).role === "student") {
       return "学号";
