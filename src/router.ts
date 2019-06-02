@@ -58,6 +58,11 @@ const router: Router = new Router({
       path: "/searchList",
       name: "searchList",
       component: () => import("./views/searchList/index.vue")
+    },
+    {
+      path: "/guide",
+      name: "guide",
+      component: () => import("./views/guide/index.vue")
     }
   ]
 });
