@@ -61,7 +61,11 @@ export default class Index extends Vue {
           }
         });
       }
-    });
+      
+    }).catch()
+    {
+ this.loading = false;
+    };
   }
 }
 </script>
