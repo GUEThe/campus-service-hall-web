@@ -157,12 +157,16 @@ export default class Index extends Vue {
               message: "注册成功！"
             });
             (this.$refs.signupForm as Form).resetFields();
+            
           } else {
             this.$message({
               type: "error",
               message: resp.message
             });
           }
+          this.loading=false;
+        }).catch(()=>{
+          this.loading=false;
         });
       }
     });
