@@ -31,7 +31,7 @@
           </el-form-item>
 
           <el-form-item v-if="service.fileGUID" class="elFormItem" label="附件">
-            <span>点击下载</span>
+            <el-link :href="`/v1/api/Files/${service.fileGUID}`" target="_blank">点击下载</el-link>
           </el-form-item>
 
           <el-form-item class="elFormItem" label="详细说明">
