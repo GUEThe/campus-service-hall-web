@@ -11,7 +11,7 @@
         <Footer/>
       </el-footer>
     </el-container>
-    <el-backtop target=".el-container" :visibility-height="10" :bottom="10">
+    <!-- <el-backtop target=".el-container" :visibility-height="10" :bottom="10">
       <div
         style="{
         height: 100%;
@@ -23,7 +23,7 @@
         color: #1989fa;
       }"
       >UP</div>
-    </el-backtop>
+    </el-backtop> -->
   </div>
 </template>
 <script lang="ts">

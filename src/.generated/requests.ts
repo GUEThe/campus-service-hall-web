@@ -222,7 +222,7 @@ export function GetFile(options: {
  */
 export function UserProcessUploadFile(options: {
   processId: number;
-  file?: file;
+  file?: File;
 }): Promise<m.DataResponse<m.RestfulData>> {
   const opts: ApiRequestOptions = {
     url: `/api/Files/UserProcess/UploadFile/${options.processId}`,
